@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import fs from 'fs';
+import weighted from 'weighted';
 import layersSetup from './utils/layers';
 import { buildDir } from './utils/build';
 import { getDna, isDnaExit } from './utils/dna';
@@ -17,14 +18,8 @@ const getIndexs: (size: number, shuffle: boolean) => number[] = (size, shuffle) 
 }
 
 const getImageLayers: (layers: Layer[]) => ImageLayer[] = (layers) => layers.map(layer => {
-  const weights = layer.elements.map(e => e.weight);
-  // 元素的总权重
-  const totalWeight = layer.elements.reduce((totalWeight, e) => totalWeight + e.weight, 0);
-  const random = Math.floor(Math.random() * totalWeight);
-  // 第几个元素
-  const index = R.findIndex(i => i < 0, R.scan((r, w) => r - w, random, weights))
-  // 获取元素
-  const element = layer.elements[index - 1];
+  const index = weighted(layer.elements.reduce((obj, e, index) => ({ ...obj, [index]: e.weight }), {}))
+  const element = layer.elements[index];
   return {
     id: element.id,
     name: layer.name,

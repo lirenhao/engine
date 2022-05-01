@@ -38,24 +38,20 @@ const getElements = (path) => {
     });
 };
 
-export default (layerOrders: Array<LayerOrder>, layersDir: string): Array<Layer> => layerOrders
+export default (layerOrders: LayerOrder[], layersDir: string): Layer[] => layerOrders
   .map((layerOrder, index: number) => ({
     id: index,
     elements: getElements(`${layersDir}/${layerOrder.name}/`),
     name:
-      layerOrder.options?.["displayName"] != undefined
-        ? layerOrder.options?.["displayName"]
+      layerOrder.options?.displayName != undefined
+        ? layerOrder.options?.displayName
         : layerOrder.name,
     blend:
-      layerOrder.options?.["blend"] != undefined
-        ? layerOrder.options?.["blend"]
+      layerOrder.options?.blend != undefined
+        ? layerOrder.options?.blend
         : "source-over",
     opacity:
-      layerOrder.options?.["opacity"] != undefined
-        ? layerOrder.options?.["opacity"]
+      layerOrder.options?.opacity != undefined
+        ? layerOrder.options?.opacity
         : 1,
-    bypassDNA:
-      layerOrder.options?.["bypassDNA"] !== undefined
-        ? layerOrder.options?.["bypassDNA"]
-        : false,
   }));

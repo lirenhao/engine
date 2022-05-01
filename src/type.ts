@@ -11,7 +11,6 @@ export type Layer = {
   name: string;
   blend: string;
   opacity: number;
-  bypassDNA: boolean;
   elements: Element[];
 };
 
@@ -21,7 +20,6 @@ export type LayerOrder = {
     displayName?: string;
     blend?: string;
     opacity?: number;
-    bypassDNA?: boolean;
   };
 }
 

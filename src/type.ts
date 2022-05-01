@@ -26,6 +26,8 @@ export type LayerOrder = {
 }
 
 export type LayerConfig = {
+  buildDir: string;
+  layersDir: string;
   growEditionSizeTo: number;
   layersOrder: {
     name: string;

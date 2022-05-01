@@ -1,8 +1,5 @@
 import fs from 'fs';
-import {Layer, LayerOrder } from '../type';
-
-const basePath = process.cwd();
-export const layersDir = `${basePath}/layers`;
+import { Layer, LayerOrder } from '../type';
 
 const rarityDelimiter = "#";
 
@@ -41,7 +38,7 @@ const getElements = (path) => {
     });
 };
 
-export default (layerOrders: Array<LayerOrder>): Array<Layer> => layerOrders
+export default (layerOrders: Array<LayerOrder>, layersDir: string): Array<Layer> => layerOrders
   .map((layerOrder, index: number) => ({
     id: index,
     elements: getElements(`${layersDir}/${layerOrder.name}/`),

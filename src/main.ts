@@ -1,8 +1,8 @@
 import fs from 'fs';
 import * as R from 'ramda';
 import weighted from 'weighted';
+import build from './utils/build';
 import layersSetup from './utils/layers';
-import { buildDir } from './utils/build';
 import { getDna, isDnaExit } from './utils/dna';
 import imageSetup from './utils/image';
 import metadataSetup from './utils/metadata';
@@ -32,25 +32,32 @@ const getImageLayers: (layers: Layer[]) => ImageLayer[] = (layers) => layers.map
 });
 
 export default async (config: LayerConfig) => {
+
+  // 构建build目录
+  build(config.buildDir);
+
   // 获取组件
-  const layers = layersSetup(config.layersOrder);
+  const layers = layersSetup(config.layersOrder, config.layersDir);
 
   // TODO 验证DNA是唯一的
   const metadatas = getIndexs(config.growEditionSizeTo, false).map(edition => {
+
     const imageLayers = getImageLayers(layers);
     const dna = getDna(imageLayers);
+
     // 生成图片
     imageSetup({
-      outPath: `${buildDir}/images/${edition}.png`,
+      outPath: `${config.buildDir}/images/${edition}.png`,
       width: config.width,
       height: config.height,
       smoothing: config.smoothing,
       background: config.background,
       layers: imageLayers,
     });
+
     // 生成元数据
     return metadataSetup({
-      outPath: `${buildDir}/json/${edition}.json`,
+      outPath: `${config.buildDir}/json/${edition}.json`,
       edition,
       namePrefix: config.namePrefix,
       description: config.description,
@@ -61,5 +68,5 @@ export default async (config: LayerConfig) => {
       extraData: config.extraMetadata
     });
   });
-  fs.writeFileSync(`${buildDir}/json/_metadata.json`, JSON.stringify(metadatas, null, 2));
+  fs.writeFileSync(`${config.buildDir}/json/_metadata.json`, JSON.stringify(metadatas, null, 2));
 };

@@ -1,10 +1,6 @@
 import fs from 'fs';
 
-// 设置路径
-const basePath = process.cwd();
-export const buildDir = `${basePath}/build`;
-
-export default () => {
+export default (buildDir: string) => {
   if (fs.existsSync(buildDir)) {
     fs.rmdirSync(buildDir, { recursive: true });
   }

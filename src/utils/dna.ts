@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import { ImageLayer } from '../type';
 
 const DNA_DELIMITER = "-";

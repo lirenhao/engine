@@ -1,5 +1,5 @@
-import * as R from 'ramda';
 import fs from 'fs';
+import * as R from 'ramda';
 import weighted from 'weighted';
 import layersSetup from './utils/layers';
 import { buildDir } from './utils/build';
